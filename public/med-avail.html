@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<script type="text/javascript">
+
+    function doFillId()
+    {
+        var uid=localStorage.getItem("kuchuid");
+            //alert(uid);
+            document.getElementById("txtemail").value=uid;
+    }
+    function loadfile(ref){
+            var image=document.getElementById('prev');
+            image.src=URL.createObjectURL(ref.files[0]);
+        }
+            
+</script>
+<body onload="doFillId();">
+    <center>
+        <form method="post" action="/med-avail-process" enctype="multipart/form-data" >
+            
+            
+            <div class="container">
+                <div class="row mt-3">
+                    <div class="col-md-12 bg-danger text-white">
+                        <center><h3>Medicine Form</h3></center>
+                    </div>
+                </div>
+            <div class="row mt-4">
+                <div class="col-md-4 offset-md-1">
+                    <label for="exampleFormControlInput1" class="form-label">Email</label>
+                        <input type="text" class="form-control" name="txtemail" readonly id="txtemail">
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <label for="exampleFormControlInput1" class="form-label">City</label>
+                        <input type="text" class="form-control" name="txtcity" id="txtcity">
+                </div>
+                <!-- <div class="col-md-2 mt-4"><span id="id">*</span></div> -->
+                <!-- <div class="col-md-1 mt-4"><span id="erremail">*</span></div> -->
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4 offset-md-1">
+                    <label class="form-label">Medicine Name</label>
+                    <input type="text" class="form-control" name="txtname" id="txtname">
+                    <!-- <div class="col-md-1 mt-4"><span id="errname">*</span></div> -->
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <label class="form-label">Company</label>
+                    <input type="text" class="form-control" name="txtcomp" id="txtcomp">
+                </div>
+                
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-4 offset-md-1">
+                    <label class="form-label">Exp. Date</label>
+                    <input type="date" class="form-control"  name="txtdate" id="txtdate">
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    Unit <br>
+                    <select name="txtunit" id="txtunit" class="form-select">
+                        <option value="none">Select</option>
+                        <option value="Tab">Tab</option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Injection">Injection</option>
+
+                    </select>
+                </div>
+            </div>
+          
+            <div class="row mt-4">
+                <div class="col-md-4 offset-md-1">
+                    <label class="form-label">Qty.</label>
+                    <input type="text" class="form-control"  name="txtqty" id="txtqty">
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <label class="form-label">Pic </label>
+                    <input type="file" class="form-control" name="ppic" onchange="loadfile(this)">
+                    <img src="" alt="" width="200" height="200" id="prev">
+                </div>
+            </div>
+            
+            
+            
+            <div class="row mt-4">
+                <div class="col-md-5 offset-md-1">
+                    <input type="submit" class="btn btn-primary" value="Save" id="btn">
+                </div>
+            </div>
+    </div>
+    </form>
+    </center>
+</body>
+</html>

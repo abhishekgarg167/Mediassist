@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<style>
+  .abc{
+    width: 150px;height: 150px;
+    align-self: center;
+    margin-top: 20px;
+    border: 1px black solid;
+    border-radius: 50%;
+  }
+  .background{
+    background-image: url(pics/bgshade.jpg);
+    opacity: 0.5;
+    width: 1200;height: 1000px;
+  }
+  body{
+    background-color: rgb(252, 245, 245);
+}
+</style>
+<script>
+  function docall(){
+    localStorage.removeItem("kuchuid");
+    location.href="index.html";
+  }
+
+</script>
+<body>
+  
+    <div class="container">
+      
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card border-3 border-danger mt-3" style="width: 18rem;background-color: rgb(160, 146, 223);">
+                  <div class="abc border-3">
+                    <img src="pics/medlogo.jpg" style="border-radius: 50%; height:140px;" class="card-img-top " alt="..." width="80" height="150"></div>
+                    <div class="card-body ">
+                      <center> <a href="needy-details.html" class="btn btn-primary">Needy Details</a></center>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-3 border-danger mt-3" style="width: 18rem;background-color: rgb(243, 234, 231);">
+                  <div class="abc border-2">
+                    <img src="pics/medfinderlogo.png" style="border-radius: 50%; height:140px;" class="card-img-top " alt="..." width="80" height="150"></div>
+                    <div class="card-body">
+                     <center><a href="med-finder.html" class="btn btn-primary">Med. Finder</a></center>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-3 border-danger mt-3" style="width: 18rem;background-color: rgb(243, 234, 231);">
+                  <div class="abc border-2">
+                    <img src="pics/logout1.jpg" style="border-radius: 50%; height:140px;" class="card-img-top " alt="..." width="80" height="150"></div>
+                    <div class="card-body">
+                    <center>
+                     <input type="button" class=" btn btn-primary" value="Logout" onclick="docall();"></center>
+                    </div>
+                  </div>
+            </div>
+            
+        </div>
+        
+      
+
+    </div>
+    
+
+    
+</body>
+</html>

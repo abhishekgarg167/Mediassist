@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/angular.min.js"></script>
+    <!-- <script src="js/jquery-1.8.2.min.js"></script> -->
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script>
+        
+        var mymodule=angular.module("kuchmodule",[]);
+        mymodule.controller("kuchcontroller",function($scope,$http){
+            var uid=localStorage.getItem("kuchuid");
+            //alert(uid);
+            $scope.email=uid;
+            $scope.jsonArray=[{}];
+            $scope.fetchall=function(){
+                var email=$scope.email;
+                $http.get("/fetch-medicines?email="+email).then(okfx,notokfx);
+                function okfx(response){
+                    if(response.data.length==0){
+                        alert("Wrong Id");
+                        $scope.jsonArray=response.data;
+                    }
+                    else{
+                    //alert(JSON.stringify(response.data));
+                    $scope.jsonArray=response.data;
+                    }
+                }
+                function notokfx(response){
+                    alert("danger");
+                    //alert(JSON.stringify(response.data));
+                }
+                
+            }
+            $scope.dodelete=function(rid){
+                $http.get("/delete-fetch-medicines?rid="+rid).then(okfx,notokfx);
+                function okfx(response){
+                    //alert(JSON.stringify(response.data));
+                    //$scope.jsonArray=response.data;
+                    $scope.fetchall();
+                }
+                function notokfx(response){
+                    alert("danger");
+                    //alert(JSON.stringify(response.data));
+                }
+                
+            }
+        })
+    </script>
+</head>
+<body ng-app="kuchmodule" ng-controller="kuchcontroller" ng-init="fetchall()">
+    <div class="container">
+    <div class="row mt-4">
+        <div class="col-md-4 offset-md-1">
+            <label class="form-label">Email</label>
+                <input type="email" class="form-control" ng-model="email" readonly>
+        </div>
+        
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4 offset-md-1">
+            <label class="form-label">Search By Cities</label>
+            <input type="text" class="form-control" ng-model="google.city">
+        </div>
+    </div>
+   
+    <center>
+        <div class="row mt-4">
+        <table width="1000" border="1" rules="all" class="table table-striped">
+        <tr>
+            <th>Sr. No.</th>
+            <!-- <th>Rid</th> -->
+            <th>Email</th>
+            <th>Medicine Name</th>
+            <th>City</th>
+            <th>Company</th>
+            <th>Exp. Date</th>
+            <th>Unit</th>
+            <th>Qty</th>
+            <th>Doa</th>
+            <th>Status</th>
+            <th>Picname</th>
+        </tr>
+        <tr class="" ng-repeat="obj in jsonArray|filter:google" >
+            <td >{{$index+1}} </td>
+            <!-- <td>{{obj.rid}}</td> -->
+            <td >{{obj.email}}</td> 
+               <td >{{obj.medname}}</td>
+               <td >{{obj.city}}</td>
+               <td>{{obj.company}}</td>
+               <td>{{obj.expdate.substring(0,10)}}</td>
+               <td>{{obj.unit}}</td>
+               <td>{{obj.qty}}</td>
+               <td>{{obj.doa.substring(0,10)}}</td>
+               <td>{{obj.status}}</td>
+               <td>
+                   <img src="uploads/{{obj.picname}}" alt="" width="100" height="100">
+               </td>
+            <td><input type="button" value="Delete" class="btn btn-outline-danger" ng-click=dodelete(obj.rid)></td>
+        </tr>
+    </table>
+    </div>
+</div>
+</center>
+</body>
+</html>

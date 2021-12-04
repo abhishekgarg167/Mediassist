@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/angular.min.js"></script>
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script>
+        
+        var mymodule=angular.module("kuchmodule",[]);
+        mymodule.controller("kuchcontroller",function($scope,$http){
+            $scope.jsonArrayCity=[{}];
+            $scope.jsonArrayMedname=[{}];
+            $scope.jsonArraymedicines=[{}];
+            $scope.jsonArrayProfiles=[{}];
+            $http.get("/med-find-city").then(okfx,notokfx);
+                function okfx(response){
+                    //alert(JSON.stringify(response.data));
+                    $scope.jsonArrayCity=response.data;
+                }
+                function notokfx(response){
+                    alert("danger");
+                    //alert(JSON.stringify(response.data));
+                }
+                $scope.dochange=function(){
+                    var city=$scope.city;
+                    //alert(city);
+                    $http.get("/med-find-medicines?city="+city).then(okfx1,notokfx1);
+                    function okfx1(response){
+                        //alert(JSON.stringify(response.data));
+                        $scope.jsonArrayMedname=response.data;
+                    }
+                    function notokfx1(response){
+                        alert("danger");
+                        //alert(JSON.stringify(response.data));
+                    }
+                }
+
+                $scope.fetchdata=function(){
+                    var city=$scope.city;
+                    var medname=$scope.medname;
+
+                    //alert(city);
+                    $http.get("/med-find-pro?city="+city+"&medname="+medname).then(ok,notok);
+                    function ok(response){
+                       // alert(JSON.stringify(response.data));
+                        $scope.jsonArraymedicines=response.data;
+                    }
+                    function notok(response){
+                        alert("danger");
+                        //alert(JSON.stringify(response.data));
+                    }
+                }
+                $scope.doshowdetails=function(email){
+                    $('#detailsmodal').modal('show');
+                    $http.get("/ajax-fetch?emailid="+email).then(ok1,notok1);
+                    function ok1(response){
+                        //alert(JSON.stringify(response.data));
+                        $scope.jsonArrayProfiles=response.data;
+                    }
+                    function notok1(response){
+                        alert("danger");
+                        //alert(JSON.stringify(response.data));
+                    }
+                }
+        })
+    </script>
+</head>
+<body ng-app="kuchmodule" ng-controller="kuchcontroller">
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-md-1 offset-md-1">
+                City
+            </div>
+            <div class="col-md-4">
+                <input type="text" list="city" class="form-control" ng-model="city" ng-change="dochange()">
+                <datalist id="city">
+                    <option ng-repeat="obj in jsonArrayCity">{{obj.city}}</option>
+                </datalist>
+                
+            </div>
+        </div>
+    <div class="row mt-4">
+        <div class="col-md-1 offset-md-1">
+            Medicines
+        </div>
+        <div class="col-md-4">
+            <input type="text" list="medname" class="form-control" ng-model="medname">
+            <datalist id="medname">
+                <option ng-repeat="obj1 in jsonArrayMedname">{{obj1.medname}}</option>
+            </datalist>
+                
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-1 offset-md-1">
+            <input type="button" class="btn btn-outline-danger" value="Find Med Providers" ng-click="fetchdata()">
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4" ng-repeat="obj in jsonArraymedicines">
+        <div class="card" style="width: 18rem;">
+            
+            <img src="uploads/{{obj.picname}}" class="card-img-top" width="100" height="250" alt="...">
+              <div class="card-body">
+              <h5 class="card-title">Email- {{obj.email}}</h5>
+              <p class="card-text">Medicine Name- {{obj.medname}}</p>
+              <p class="card-text">Company- {{obj.company}}</p>
+              <p class="card-text">City- {{obj.city}}</p>
+              <p class="card-text">Exp. Date- {{obj.expdate}}</p>
+              <p class="card-text">Unit- {{obj.unit}}</p>
+              <p class="card-text">Quantity- {{obj.qty}}</p>
+              <p class="card-text">Doa- {{obj.doa}}</p>
+             
+              <a href="#" class="btn btn-primary" ng-click="doshowdetails(obj.email)">Details</a>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+<div class="modal fade" tabindex="-1" id="detailsmodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Details of provider</p>
+                <p ng-repeat="obj in jsonArrayProfiles">Email - {{obj.email}}<br>Name- {{obj.name}} <br>City- {{obj.city}} <br>Contact- {{obj.contact}}
+                    <br>Address- {{obj.address}}<br>Adhaar card- {{obj.acard}} <br>
+                    Pic - <img src="uploads/{{obj.picname}}" alt="" width="100" height="100">{{obj.picname}}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

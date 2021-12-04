@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="shortcut icon" type="image/png" href="pics/logo.png">
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+      
+      .iconeye{
+        
+        /* border: 1px black solid; */
+        margin: -10px;
+        zoom: 1.4;
+        /* margin-left: -10px;margin-top: -20px; */
+      }
+      
+      .logo{
+        width: 60px;height: 60px;
+        border: 1px black solid;
+        border-radius: 50%;
+        margin-left: 20px;
+        background-image: url(pics/logo.png);
+        background-size: contain;
+        /* transition: ease all 1s; */
+        background-color: #fff;
+      }
+      .logo:hover{
+        transform: scale(1.1);
+        box-shadow: 0px 0px 2px #ac3257;
+        /* background-color: blue; */
+      }
+      .pic{
+        transition: ease all 1s;
+      }
+      .pic:hover{
+        transform: scale(1.1);
+        
+      }
+      #pic-sir{
+        border-radius: 50%; border: 1px black solid; 
+        height: 200px;width: 200px;margin-left: 40px;margin-top:20px;
+        background-image: url(pics/sir.jpg);
+      background-size: contain;transition: ease all 1s;
+      }
+      #pic-sir:hover{
+        transform: scale(1.1);
+        box-shadow: 0px 0px 2px #ac3257;
+      }
+      #mypic{
+        border-radius: 50%; border: 1px black solid; 
+        height: 180px;width: 180px;margin-left: 30px;margin-top:20px;
+        background-image: url(pics/);
+      background-size: contain;transition: ease all 1s;
+      background-repeat: no-repeat;
+      }
+      #mypic:hover{
+        transform: scale(1.1);
+        box-shadow: 0px 0px 2px #ac3257;
+      }
+      .flex-p{
+        display: flex;
+        justify-content: space-evenly;
+      }
+      .flex-c{
+        flex-direction: column;
+
+      }
+      .crouse-hover:hover{
+        opacity: .8;
+      }
+    </style>
+
+
+
+    <script>
+      $(document).ready(function(){
+        $("#signup").click(function(){
+          var id=$("#txtemail").val();
+          var pwd=$("#txtpwd").val();
+          var mob=$("#txtmob").val();
+          var med=$("#medtype").val();
+          var data='vid='+id+'&vpwd='+pwd+'&vmob='+mob+'&vmed='+med;
+          var url="/ajax-insert?"+data;
+
+          $.get(url,function(respJSONAry){
+            $("#sp1").html("Registered Successfully");
+            //alert(JSON.stringify(respJSONAry));
+          });
+          var url="/send?email="+id;
+          $.get(url,function(respJSONAry){
+            alert("mail sent");
+            //alert(JSON.stringify(respJSONAry));
+          });
+        })
+
+        //---------------------------------------
+
+
+        $("#txtemail").blur(function(){
+          
+          var uid=$(this).val();
+          var url="/ajax-check-uid?anyid="+uid;
+          $.get(url,function(respJSONAry){
+            if(respJSONAry.length==0){
+              alert("Available");
+            }
+            else{
+              alert("Not Available")
+            }
+          });
+        });
+
+
+        //----------------------------------
+        $("#icon").mousedown(function(){
+                $("#txtpwd").prop("type","text");
+                $(this).addClass("fa-eye-slash").removeClass("fa-eye ey");
+            });
+            //------------------
+            $("#icon").mouseup(function(){
+                $("#txtpwd").attr("type","password");
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye ey")
+            });
+
+            $("#icon1").mousedown(function(){
+                $("#txtpwd1").prop("type","text");
+                $(this).addClass("fa-eye-slash").removeClass("fa-eye ey");
+            });
+            //------------------
+            $("#icon1").mouseup(function(){
+                $("#txtpwd1").attr("type","password");
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye ey")
+            });
+            //---------------------------
+         
+
+        
+
+        $("#login").click(function(){
+          var id=$("#txtemail1").val();
+          var pwd=$("#txtpwd1").val();
+          var med=$("#medtype").val();
+          //var data='vid='+uid+'&vpwd='+id;
+          var url="/ajax-check-user?vid="+id+'&vpwd='+pwd;
+          $.get(url,function(respJSONAry){
+            if(respJSONAry.length==0){
+              $("#sp2").html("Invalid Id and Password");
+              //alert("Invalid Id and Password");
+              //alert(JSON.stringify(respJSONAry));
+            }
+            else{
+              localStorage.setItem("kuchuid",id);
+              var uid=localStorage.getItem("kuchuid");
+            //alert(uid);
+
+
+              $("#sp2").html("Authorized");
+              //alert("Authorized");
+              //alert(JSON.stringify(respJSONAry));
+              if(respJSONAry[0].utype=="Med Provider"){
+                //alert(JSON.stringify(respJSONAry));
+                window.location="med-provider-dash.html";
+              //alert("a");
+              }
+              else if(respJSONAry[0].utype=="Med Needy"){
+                //alert(JSON.stringify(respJSONAry));
+                window.location="needy-dash.html";
+              //alert("b");
+              }
+
+            }
+
+            
+          });
+
+          
+
+        });
+      });
+    </script>
+</head>
+<body>
+  
+
+<div class="container" style="border: 1px black solid;">
+  <div class="row">
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: 1px black solid;">
+    <div class="container-fluid">
+      <div class="col-md-1">
+      <div class="logo">
+      </div>
+    </div>
+
+      <div class="col-md-1" ">
+       <h4><font style="color: salmon;"><i>Mediassist</i> </font></h4>
+      </div>
+
+      <div class="btn btn-primary offset-md-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Sign Up
+      </div>
+      <div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+        Log In
+      </div>
+    </div>
+  </nav>
+
+</div>
+
+
+
+<!-- crousal -->
+<div class="row">
+  <div class="col-md-12" >
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active ">
+      <img src="pics/medicines9.jpg"   class="d-block w-100 crouse-hover" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="pics/medicines11.jpg"  class="d-block w-100 crouse-hover" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="pics/medicines8.png"  class="d-block w-100 crouse-hover" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="pics/medicines7.jpg"  class="d-block w-100 crouse-hover" alt="...">
+    </div>
+    
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</div>
+</div>
+
+
+<div class="row ">
+  <div class="col-md-12 text-white" style=" height: 40px;border: 1px black solid;padding: 5px; background-color: rgb(55, 95, 129);">
+   <center><h4> Our Services</h4></center></div>
+</div>
+
+<div class="row mt-4 align-items-center " >
+  <div class="col-md-4 pic" style="margin-left: 32px;">
+    <div class="card" style="width: 18rem;">
+      <img  src="pics/medicinespro.jpg" class="card-img-top " alt="...">
+      <div class="card-body ">
+        <h5 class="card-title">Provide Medicines</h5>
+        <p class="card-text">It's a beautiful day to help someone.</p>
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 pic" style="margin-left: -16px;">
+    <div class="card " style="width: 18rem;">
+      <img src="pics/medicines10.jpg" height="150"  class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Get Medicines</h5>
+        <p class="card-text">As to diseases, make a habit of two things — to help, or at least, to do no harm</p>
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 pic" style="margin-left: -16px;">
+    <div class="card" style="width: 18rem;">
+      <img src="pics/medicinespro1.jpg" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Objective</h5>
+        <p class="card-text">The goals of medicine encompass the relief of pain and suffering,</p>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  <br>
+  <div class="row" style="background-color: darkgrey;">
+    <div class="col-md-6">
+      <center><h4>Meet the developer</h4></center>
+    </div>
+    
+    <div class="col-md-6">
+      <center><h4>Under the guidance of</h4></center>
+    </div>
+  </div>
+  <div class="row mt-4 " >
+    <div class="col-md-5 offset-md-1" >
+      <div class="card w-75 border-danger " style="width: 18rem;">
+        <img src="pics/mypic.jpg" height="340" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Abhishek Garg</h5>
+          <p class="card-text"><b> Email </b>- abhishekgarg1607@gmail.com <br>
+           <b> College Name </b>- Dr.B.R. Ambedkar NIT Jalandhar <b><br> Contact  </b> - 9517967645</p>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5 offset-md-1 ">
+      <div class="card w-75 border-danger" style="width: 18rem;">
+        <img src="pics/sir.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Rajesh K. Bansal(MCA,SCJP,MCP)
+            (T&D Head)</h5>
+       <p class="card-text"> <b> Academic Qualification </b>- M.Sc(IT) ,MCA (Master Of Computer Application)
+            <br><b> Training Experience </b> - 18 Years <br><b>Author of</b> -	Real Java
+           <br><b> Founder of</b> - www.realJavaOnline.com</p>
+         
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+   
+
+  <br>
+
+    
+
+<br><br>
+
+<div class="row">
+  <div class="col-md-12" style="height: 40px;border: 1px black solid; background-color: darkgray;padding: 5px;">
+   <center><h4> Reach Us </h4></center></div>
+</div>
+
+<div class="row">
+  <div class="col-md-6" style="height: 250px;border: 1px black solid;">
+      <center >
+        <iframe class="pic" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d220641.44110667187!2d74.8561869977454!3d30.222172620097293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391732a4f07278a9%3A0x4a0d6293513f98ce!2sBanglore%20Computer%20Education%20(C%20C%2B%2B%20Android%20J2EE%20PHP%20Python%20AngularJs%20Spring%20Java%20Training%20Institute)!5e0!3m2!1sen!2sin!4v1624957885940!5m2!1sen!2sin" width="200" height="200" style="border:0;margin-top: 20px;" allowfullscreen="" loading="lazy"></iframe>
+</center>
+    </div>
+    <div class="col-md-6" style="height: 250px;border: 1px black solid;">
+     <center>
+      <iframe class="pic" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FMediAssist-101819562175060%2F%3Fref%3Dpages_you_manage&tabs=timeline&width=340&height=187&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="187" style="border:none;overflow:hidden;margin-top: 20px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+    </center></div>
+  </div>
+
+
+<br>
+</div>
+<br>
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Signup Modal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form >
+            <div class="mb-3 col-md-11">
+              <label  class="form-label">Email address</label>
+              <input type="email" class="form-control" name="txtemail" id="txtemail" >
+            </div>
+            <div class="row">
+            <div class="mb-3 col-md-11">
+              <label  class="form-label">Password</label>
+              <input type="password" class="form-control" name="txtpwd" id="txtpwd">
+            </div>
+            
+            <div class="mb-3 col-md-1 mt-4">
+              <div style="margin-top: 15px">
+             <i class="fa fa-eye iconeye"  id="icon" aria-hidden="true"></i></div>
+            </div>
+            
+          </div>
+            <div class="mb-3 col-md-11">
+              <label  class="form-label">Mobile</label>
+              <input type="text" class="form-control" name="txtmob" id="txtmob">
+            </div>
+            <div class="mb-3 col-md-11">
+              <label  class="form-label">User Type</label>
+            <select class="form-select" aria-label="Default select example" name="medtype" id="medtype">
+              <option value="none">Select</option>
+              <option value="Med Provider">Med Provider</option>
+              <option value="Med Needy">Med Needy</option>
+            </select>
+          </div>
+            <div class="mb-3 offset-md-5">
+                <button type="button" class="btn btn-primary" id="signup">Signup</button>
+                <span id="sp1">*</span>
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Login Modal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form >
+            <div class="mb-3 col-md-11">
+              <label  class="form-label ">Email address</label>
+              <input type="email" class="form-control" name="txtemail1" id="txtemail1" >
+            </div>
+            <div class="row">
+            <div class="mb-3 col-md-11">
+              <label  class="form-label">Password</label>
+              <input type="password" class="form-control" name="txtpwd1" id="txtpwd1">
+            </div>
+            <div class="mb-3 col-md-1 mt-4">
+              <div style="margin-top: 15px">
+             <i class="fa fa-eye iconeye"  id="icon1" aria-hidden="true"></i></div>
+            </div>
+          </div>
+            <div class="mb-3 offset-md-5">
+                   <button type="button" class="btn btn-primary" id="login">Login </button>
+                   <span id="sp2">*</span>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="background">
+</div>
+</body>
+</html>

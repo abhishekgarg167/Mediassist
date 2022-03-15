@@ -193,6 +193,7 @@ app.get("/delete-fetch-medicines",function(req,resp){
         }
     })
 })
-app.listen(3008,function(){
+const PORT = process.env.PORT || 3008;
+app.listen(PORT,function(){
     console.log("server started");
 })
